@@ -1,24 +1,159 @@
-# README
+# RESTful API Documentation
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Introduction
 
-Things you may want to cover:
+Welcome to the documentation for the Todo List RESTful API application. This API was developed as a case study project for the Rakamin Academy application. This application allows users to create and manage todo lists and items within those lists. The API implements JSON Web Tokens (JWT) for authentication and authorization and utilizes bcrypt for secure password hashing.
 
-* Ruby version
+## Table of Contents
 
-* System dependencies
+- [Authentication](#authentication)
+  - [Register](#register)
+  - [Login](#login)
+- [API Versioning](#api-versioning)
+- [Todo Lists](#todo-lists)
+  - [Create a Todo List](#create-a-todo-list)
+  - [Retrieve Todo Lists](#retrieve-todo-lists)
+  - [Retrieve Todo by ID](#retrieve-todo-by-id)
+  - [Update Todo](#update-todo)
+  - [Delete Todo](#delete-todo)
+- [Todo Items](#todo-items)
+  - [Create a Todo Item](#create-a-todo-item)
+  - [Retrieve Todo Items](#retrieve-todo-items)
+  - [Retrieve Todo Item by ID](#retrieve-todo-item-by-id)
+  - [Update Todo Item](#update-todo-item)
+  - [Delete Todo Item](#delete-todo-item)
 
-* Configuration
+## Authentication
 
-* Database creation
+To access the API's protected endpoints, users need to authenticate themselves. Authentication is done using JWT. Upon successful authentication, the API will provide the user with a token that should be included in the headers **Authorization** of requests.
 
-* Database initialization
+## Register
 
-* How to run the test suite
+- Endpoint: `/signup`
+- Method: `POST`
+- Description: Allows users to register an account.
+- Request Body:
+  - `name` (string, required): The name for the account.
+  - `email` (string, required): The username for the account.
+  - `password` (string, required): The password for the account.
+  - `password_confirmation` (string, required): should be same as `password`.
+- Response:
+  - `auth_token` (string): A JWT Token for authentication.
+  - `message` (string): A success message indicating the account has been created.
+- Testing using httpie:
+  - ```http POST :3000/signup name="name" email="email@email.com" password="pswd123" password_confirmation="pswd123"```
+  
+## Login
 
-* Services (job queues, cache servers, search engines, etc.)
+- Endpoint: `/auth/login`
+- Method: `POST`
+- Description: Allows users to log into their account.
+- Request Body:
+  - `email` (string, required): The email for the account.
+  - `password` (string, required): The password for the account.
+- Response:
+  - `token` (string): The JWT token to be used for subsequent authenticated requests.
 
-* Deployment instructions
 
-* ...
+
+# API Versioning
+
+To change the API version, you can specify the version using the `Accept` header in your requests. The API version is indicated by the `v1` in the `Accept` header value.
+
+Example:
+```
+Accept: 'application/vnd.todos.v1+json'
+```
+
+This header informs the server that you want to use version 1 of the API.
+
+# Todo Lists
+
+## Create A Todo List
+
+- Endpoint: `POST /todos`
+- Description: Creates a new todo.
+- Request body:
+  - `title` (string): The title of the todo.
+- Response: 
+  - Status: 201 Created
+  - Body: The created todo object.
+
+## Retrieve Todo Lists
+
+- Endpoint: `GET /todos`
+- Description: Retrieves all todo lists.
+- Response:
+  - Status: 200 OK
+  - Body: An array of todo objects and it items.
+
+## Retrieve Todo by ID
+
+- Endpoint: `GET /todos/:id`
+- Description: Retrieves a specific todo based on the provided ID.
+- Response:
+  - Status: 200 OK
+  - Body: The requested todo object.
+
+## Update Todo
+
+- Endpoint: `PUT /todos/:id`
+- Description: Updates the title of a specific todo.
+- Request body:
+  - `title` (string): The updated title of the todo.
+- Response:
+  - Status: 204 No Content
+ 
+## Delete Todo
+
+- Endpoint: `DELETE /todos/:id`
+- Description: Deletes a specific todo based on the provided ID. All the items within this todo id will also be deleted.
+- Response:
+  - Status: 204 No Content
+
+# Todo Items
+
+## Create a Todo Item
+
+- Endpoint: `POST /todos/:todos_id/items`
+- Description: Creates a new todo item within a specific todo list.
+- Request body:
+  - `name` (string): The description of the todo item.
+  - `done` (boolean): Is it done or not yet.
+- Response:
+  - Status: 201 Created
+  - Body: The created todo item object.
+
+## Retrieve Todo Items
+
+- Endpoint: `GET /todos/:todos_id/items`
+- Description: Retrieves all todo items within a specific todo list.
+- Response:
+  - Status: 200 OK
+  - Body: An array of todo item objects.
+
+## Retrieve Todo Item by ID
+
+- Endpoint: `GET /todos/:todos_id/items/:items_id`
+- Description: Retrieves a specific todo item within a specific todo list based on the provided item ID.
+- Response:
+  - Status: 200 OK
+  - Body: The requested todo item object.
+
+## Update Todo Item
+
+- Endpoint: `PUT /todos/:todos_id/items/:items_id`
+- Description: Updates a specific todo item within a specific todo list.
+- Request body:
+  - `name` (string): The description of the todo item.
+  - `done` (boolean): Is it done or not yet.
+- Response:
+  - Status: 204 No Content
+
+## Delete Todo item
+
+- Endpoint: `DELETE /todos/:todos_id/items/:items_id`
+- Description: Deletes a specific todo item within a specific todo list based on the provided item ID.
+- Response:
+  - Status: 204 No Content
+
