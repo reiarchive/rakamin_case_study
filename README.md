@@ -10,6 +10,7 @@ Welcome to the documentation for the Todo List RESTful API application. This API
   - [Register](#register)
   - [Login](#login)
 - [API Versioning](#api-versioning)
+- [Paginating](#paginating)
 - [Todo Lists](#todo-lists)
   - [Create a Todo List](#create-a-todo-list)
   - [Retrieve Todo Lists](#retrieve-todo-lists)
@@ -66,6 +67,19 @@ Accept: 'application/vnd.todos.v1+json'
 ```
 
 This header informs the server that you want to use version 1 of the API.
+
+# Paginating
+
+To retrieve todos API with pagination, you can use the `page` query parameter. The `page` parameter allows you to specify the page number for fetching a specific set of todos. Each page contain 20 todos.
+
+Example using HTTPie:
+```
+http :3000/todos page==1 Accept:'application/vnd.todos.v1+json' Authorization:'eyJ0...nLw2bYQbK0g'
+```
+
+In the example request, the `page==1` query parameter is set to `1`, indicating that you want to retrieve the first page of todos.
+
+To retrieve another pages, simply update the value of the `page` parameter. For example, to retrieve the second page, you should set `page==2`.
 
 # Todo Lists
 
