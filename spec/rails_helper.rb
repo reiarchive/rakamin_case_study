@@ -42,8 +42,13 @@ end
 
 RSpec.configure do |config|
   # Use support request helper
-  config.include RequestSpecHelper, type: :request
-  
+  # Old :
+  # config.include RequestSpecHelper, type: :request
+  # config.include ControllerSpecHelper, type: :request
+  # New :
+  config.include RequestSpecHelper
+  config.include ControllerSpecHelper
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
