@@ -35,6 +35,14 @@ class AuthorizeApiRequest
   # check for token in `Authorization` header
   def http_auth_header
     if headers['Authorization'].present?
+      #'token'
+      #token
+      #'  token'
+      #
+      #.split without .last :
+      #' ', ' ', token
+      #
+      #.last => token
       return headers['Authorization'].split(' ').last
     end
       raise(ExceptionHandler::MissingToken, Message.missing_token)
