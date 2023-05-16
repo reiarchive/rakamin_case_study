@@ -7,7 +7,10 @@ class TodosController < ApplicationController
       # Before auth
       # @todos = Todo.all
       # After auth
-      @todos = current_user.todos
+      # @todos = current_user.todos
+      # After paginating
+      @todos = current_user.todos.paginate(page: params[:page], per_page: 20)
+      
       json_response(@todos)
     end
 
