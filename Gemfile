@@ -12,6 +12,15 @@ gem "sqlite3", "~> 1.4"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
+# Use ActiveModel has_secure_password
+gem 'bcrypt', '~> 3.1.16'
+
+# Use jwt for authentication
+gem 'jwt'
+
+# Use solargraph
+gem 'solargraph'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
@@ -37,12 +46,23 @@ gem "bootsnap", require: false
 # gem "rack-cors"
 
 group :development, :test do
+  gem 'rspec-rails', '~> 6.0.0'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
 
+group :test do
+  gem 'factory_bot_rails', '~> 4.0'
+  gem 'shoulda-matchers', '~> 3.1'
+  gem 'faker'
+  gem 'database_cleaner'
+end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
 
+
+gem "active_model_serializers", "~> 0.10.13"
+
+gem "will_paginate", "~> 3.3"
