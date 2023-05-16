@@ -1,14 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe 'Todos API', type: :request do
+  #Create user
+  let(:user) { create(:user) }
+  
   # initialize test data
-  let!(:todos) { create_list(:todo, 10) }
+  let!(:todos) { create_list(:todo, 10, created_by: user.id) }
   let(:todo_id) { todos.first.id }
 
+  # authorize request
+  let(:headers) { valid_headers }
+  
   # Test suite for GET /todos
   describe 'GET /todos' do
     # make HTTP get request before each example
-    before { get '/todos' }
+    # Before user auth :
+    # before { get '/todos' }
+    # After user auth implemented :
+    before { get '/todos', params: {}, headers: headers }
 
     it 'returns todos' do
       # Note `json` is a custom helper to parse JSON responses
@@ -23,7 +32,10 @@ RSpec.describe 'Todos API', type: :request do
 
   # Test suite for GET /todos/:id
   describe 'GET /todos/:id' do
-    before { get "/todos/#{todo_id}" }
+    # Before user auth :
+    # before { get "/todos/#{todo_id}" }
+    # After user auth implemented :
+    before { get "/todos/#{todo_id}", params: {}, headers: headers }
 
     context 'when the record exists' do
       it 'returns the todo' do
@@ -52,10 +64,17 @@ RSpec.describe 'Todos API', type: :request do
   # Test suite for POST /todos
   describe 'POST /todos' do
     # valid payload
-    let(:valid_attributes) { { title: 'Learn Elm', created_by: '1' } }
+    # Before user auth :
+    # let(:valid_attributes) { { title: 'Learn Elm', created_by: '1' } }
+    # After user auth implemented :
+    let(:valid_attributes) { { title: 'Learn Elm', created_by: user.id.to_s }.to_json }
 
     context 'when the request is valid' do
-      before { post '/todos', params: valid_attributes }
+      # valid payload
+      # Before user auth :
+      # before { post '/todos', params: valid_attributes }
+      # After user auth implemented :
+      before { post '/todos', params: valid_attributes, headers: headers }
 
       it 'creates a todo' do
         expect(json['title']).to eq('Learn Elm')
@@ -67,7 +86,11 @@ RSpec.describe 'Todos API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/todos', params: { title: 'Foobar' } }
+      # Before user auth :
+      # before { post '/todos', params: { title: 'Foobar' } }
+      # After user auth implemented :
+      let(:invalid_attributes) { { title: nil }.to_json }
+      before { post '/todos', params: invalid_attributes, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -75,17 +98,23 @@ RSpec.describe 'Todos API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Created by can't be blank/)
+          .to match(/Validation failed: Title can't be blank/)
       end
     end
   end
 
   # Test suite for PUT /todos/:id
   describe 'PUT /todos/:id' do
-    let(:valid_attributes) { { title: 'Shopping' } }
+    # Before auth
+    # let(:valid_attributes) { { title: 'Shopping' } }
+    # After auth
+    let(:valid_attributes) { { title: 'Shopping' }.to_json }
 
     context 'when the record exists' do
-      before { put "/todos/#{todo_id}", params: valid_attributes }
+      # Before auth
+      # before { put "/todos/#{todo_id}", params: valid_attributes }
+      # After auth
+      before { put "/todos/#{todo_id}", params: valid_attributes, headers: headers }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -99,7 +128,10 @@ RSpec.describe 'Todos API', type: :request do
 
   # Test suite for DELETE /todos/:id
   describe 'DELETE /todos/:id' do
-    before { delete "/todos/#{todo_id}" }
+    # Before auth
+    # before { delete "/todos/#{todo_id}" }
+    # After auth
+    before { delete "/todos/#{todo_id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
