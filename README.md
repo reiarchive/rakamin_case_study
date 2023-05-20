@@ -4,6 +4,13 @@
 
 Welcome to the documentation for the Todo List RESTful API application. This API was developed as a case study project for the Rakamin Academy application. This application allows users to create and manage todo lists and items within those lists. The API implements JSON Web Tokens (JWT) for authentication and authorization and utilizes bcrypt for secure password hashing.
 
+Tech Stack Used :
+
+- Rails version             7.0.4.3
+- Ruby version              3.2.2 (2023-03-30 revision e51014f9c0) [x86_64-linux]
+- RubyGems version          3.4.10
+- Rack version              2.2.7
+
 ## Table of Contents
 
 - [Authentication](#authentication)
